@@ -7,6 +7,7 @@ const formModal = document.querySelector('.formModal');
 let moneyTotal = document.getElementById("moneyTotal");
 let balance;
 
+let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft")
 
 // make it check if there is already data in storage 
 let budgetData = JSON.parse(localStorage.getItem("budgetData"));
@@ -23,6 +24,7 @@ document.querySelector("form").reset();
 // the updateUI function 
 function updateUI(budgetData) {
   moneyTotal.textContent = `£${budgetData.balance}`;
+  calculatedMoneyLeft.textContent = `£${budgetData.moneyLeft}`
   document.getElementById("balance").value = budgetData.balance;
   document.getElementById("save").value = budgetData.save;
   document.getElementById("rent").value = budgetData.rent;
@@ -51,18 +53,23 @@ submitBtn.addEventListener("click", function (event) {
   const groceries = parseFloat(document.getElementById("groceries").value);
   const other = parseFloat(document.getElementById("other").value);
 
+  // calculate moneyLeft
+  let moneyLeft = save - (rent + groceries + other);
+
   // put the values in LS
   const budgetData = {
     balance: balance,
     save: save,
     rent: rent,
     groceries: groceries,
-    other: other
+    other: other,
+    moneyLeft: moneyLeft
   };
   localStorage.setItem("budgetData", JSON.stringify(budgetData));
 
-  // update moneyTotal
+  // update moneyTotal and moneyLeft
   moneyTotal.textContent = `£${balance}`;
+  calculatedMoneyLeft.textContent = `£${moneyLeft}`;
 
   // clear form 
   document.querySelector("form").reset();
