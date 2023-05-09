@@ -1,13 +1,17 @@
-// all variables
+// top variables
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const openModal = document.getElementById("openModal");
-const formModal = document.querySelector('.formModal');
+const formModal = document.querySelector(".formModal");
 
 let moneyTotal = document.getElementById("moneyTotal");
 let balance;
 
 let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft")
+
+// bottom variables
+const openAddIncome = document.getElementById("openAddIncome")
+const addIncomeModal = document.querySelector(".addIncomeModal")
 
 // make it check if there is already data in storage 
 let budgetData = JSON.parse(localStorage.getItem("budgetData"));
@@ -26,9 +30,10 @@ function updateUI(budgetData) {
   moneyTotal.textContent = `£${budgetData.balance}`;
   calculatedMoneyLeft.textContent = `£${budgetData.moneyLeft}`
   document.getElementById("balance").value = budgetData.balance;
+  document.getElementById("income").value = budgetData.income;
   document.getElementById("save").value = budgetData.save;
   document.getElementById("rent").value = budgetData.rent;
-  document.getElementById("groceries").value = budgetData.groceries;
+  document.getElementById("memberships").value = budgetData.memberships;
   document.getElementById("other").value = budgetData.other;
 }
 
@@ -41,6 +46,11 @@ submitBtn.addEventListener("click", () => {
   formModal.close();
 })
 
+cancelBtn.addEventListener("click", () => {
+  formModal.close();
+  document.querySelector("form").reset();
+})
+
 
 // save form input data to LS
 submitBtn.addEventListener("click", function (event) {
@@ -48,20 +58,25 @@ submitBtn.addEventListener("click", function (event) {
 
   // get the values of inputs
   balance = parseFloat(document.getElementById("balance").value);
+  const income = parseFloat(document.getElementById("income").value);
   const save = parseFloat(document.getElementById("save").value);
   const rent = parseFloat(document.getElementById("rent").value);
-  const groceries = parseFloat(document.getElementById("groceries").value);
+  const memberships = parseFloat(document.getElementById("memberships").value);
   const other = parseFloat(document.getElementById("other").value);
 
+
+  // check if valid input
+
   // calculate moneyLeft
-  let moneyLeft = save - (rent + groceries + other);
+  let moneyLeft = income - save - (rent + memberships + other);
 
   // put the values in LS
   const budgetData = {
     balance: balance,
+    income: income,
     save: save,
     rent: rent,
-    groceries: groceries,
+    memberships: memberships,
     other: other,
     moneyLeft: moneyLeft
   };
@@ -75,8 +90,12 @@ submitBtn.addEventListener("click", function (event) {
   document.querySelector("form").reset();
 });
 
-// make cancel button also clear form
-cancelBtn.addEventListener("click", () => {
-  document.querySelector("form").reset();
-})
 
+
+
+
+
+
+openAddIncome.addEventListener("click", () => {
+  addIncomeModal.showModal()
+})
