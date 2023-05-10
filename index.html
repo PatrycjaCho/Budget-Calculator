@@ -22,20 +22,28 @@
                 <form>
                     <label for="balance">Starting Balance:</label>
                     <input type="number" id="balance" name="balance" placeholder="0.00" required><br>
+                    <span id="balanceError" class="error"></span>
+
                     <label for="income">Monthly Income:</label>
                     <input type="number" name="income" id="income" placeholder="0.00" required><br>
-
+                    <span id="incomeError" class="error"></span>
+   
                     <label for="save">How much would you like to save a month?</label>
                     <input type="number" id="save" name="save" placeholder="0.00" required><br>
+                    <span id="saveError" class="error"></span>
+
                     <p>Fixed expenses:</p>
                     <label for="rent">Rent:</label>
                     <input type="number" id="rent" name="rent" placeholder="0.00" required><br>
+                    <span id="rentError" class="error"></span>
 
                     <label for="memberships">Memberships:</label>
                     <input type="number" id="memberships" name="memberships" placeholder="0.00" required><br>
+                    <span id="membershipsError" class="error"></span>
 
                     <label for="other">Other:</label>
                     <input type="number" id="other" name="other" placeholder="0.00" required><br>
+                    <span id="otherError" class="error"></span>
 
                     <button id="submitBtn" type="submit">Submit</button>
                     <button type="submit" formmethod="dialog" id="cancelBtn" formnovalidate>Cancel</button>

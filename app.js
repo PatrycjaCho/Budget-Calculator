@@ -42,17 +42,18 @@ openModal.addEventListener("click", () => {
   formModal.showModal();
 })
 
-submitBtn.addEventListener("click", () => {
-  formModal.close();
-})
-
 cancelBtn.addEventListener("click", () => {
   formModal.close();
   document.querySelector("form").reset();
+
+  //clear error messages if form has been canceled
+  document.querySelectorAll('.error').forEach((element) => {
+    element.textContent = "";
+  })
 })
 
 
-// save form input data to LS
+// submit button actions 
 submitBtn.addEventListener("click", function (event) {
   event.preventDefault();
 
@@ -64,33 +65,78 @@ submitBtn.addEventListener("click", function (event) {
   const memberships = parseFloat(document.getElementById("memberships").value);
   const other = parseFloat(document.getElementById("other").value);
 
-
   // check if valid input
+  let validInput = true;
+  if (isNaN(balance)) {
+    validInput = false;
+    document.getElementById("balanceError").textContent = "Balance is required";
+  } else {
+    document.getElementById("balanceError").textContent = "";
+  }
 
-  // calculate moneyLeft
-  let moneyLeft = income - save - (rent + memberships + other);
+  if (isNaN(income)) {
+    validInput = false;
+    document.getElementById("incomeError").textContent = "Income is required";
+  } else {
+    document.getElementById("incomeError").textContent = "";
+  }
+  if (isNaN(save)) {
+    validInput = false;
+    document.getElementById("saveError").textContent = "Saving amount is required";
+  } else {
+    document.getElementById("saveError").textContent = "";
+  }
 
-  // put the values in LS
-  const budgetData = {
-    balance: balance,
-    income: income,
-    save: save,
-    rent: rent,
-    memberships: memberships,
-    other: other,
-    moneyLeft: moneyLeft
-  };
-  localStorage.setItem("budgetData", JSON.stringify(budgetData));
+  if (isNaN(rent)) {
+    validInput = false;
+    document.getElementById("rentError").textContent = "Rent is required";
+  } else {
+    document.getElementById("rentError").textContent = "";
+  }
+  if (isNaN(memberships)) {
+    validInput = false;
+    document.getElementById("membershipsError").textContent = "Memberhips are required";
+  } else {
+    document.getElementById("membershipsError").textContent = "";
+  }
 
-  // update moneyTotal and moneyLeft
-  moneyTotal.textContent = `£${balance}`;
-  calculatedMoneyLeft.textContent = `£${moneyLeft}`;
+  if (isNaN(other)) {
+    validInput = false;
+    document.getElementById("otherError").textContent = "Other expenses are required";
+  } else {
+    document.getElementById("otherError").textContent = "";
+  }
 
-  // clear form 
-  document.querySelector("form").reset();
+  // actions if form is valid
+  if (validInput) {
+
+    // calculate moneyLeft
+    let moneyLeft = income - save - (rent + memberships + other);
+
+    // put the values in LS
+    const budgetData = {
+      balance: balance,
+      income: income,
+      save: save,
+      rent: rent,
+      memberships: memberships,
+      other: other,
+      moneyLeft: moneyLeft
+    };
+    localStorage.setItem("budgetData", JSON.stringify(budgetData));
+
+    // update moneyTotal and moneyLeft
+    moneyTotal.textContent = `£${balance}`;
+    calculatedMoneyLeft.textContent = `£${moneyLeft}`;
+
+    // clear form 
+    document.querySelector("form").reset();
+    // close form 
+    submitBtn.addEventListener("click", () => {
+      formModal.close();
+    })
+  }
 });
-
-
 
 
 
