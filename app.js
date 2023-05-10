@@ -7,11 +7,22 @@ const formModal = document.querySelector(".formModal");
 let moneyTotal = document.getElementById("moneyTotal");
 let balance;
 
-let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft")
+let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft");
 
 // bottom variables
-const openAddIncome = document.getElementById("openAddIncome")
-const addIncomeModal = document.querySelector(".addIncomeModal")
+const openAddIncome = document.getElementById("openAddIncome");
+const addIncomeModal = document.querySelector(".addIncomeModal");
+const addIncomeSubmit = document.getElementById("addIncomeSubmit");
+const cancelAddIncome = document.getElementById("cancelAddIncome");
+
+const openAddExpense = document.getElementById("openAddExpense");
+const addExpenseModal = document.querySelector(".addExpenseModal");
+const addExpenseSubmit = document.getElementById("addExpenseSubmit");
+const cancelAddExpense = document.getElementById("cancelAddExpense");
+
+const incomeExpenseTab = document.getElementById("incomeExpenseTab")
+const expenseTab = document.getElementById("expenseTab")
+const incomeTab = document.getElementById("incomeTab")
 
 // make it check if there is already data in storage 
 let budgetData = JSON.parse(localStorage.getItem("budgetData"));
@@ -129,19 +140,99 @@ submitBtn.addEventListener("click", function (event) {
     moneyTotal.textContent = `£${balance}`;
     calculatedMoneyLeft.textContent = `£${moneyLeft}`;
 
+    // close form 
+    formModal.close();
+
     // clear form 
     document.querySelector("form").reset();
-    // close form 
-    submitBtn.addEventListener("click", () => {
-      formModal.close();
-    })
   }
 });
 
-
-
-
+// the add Income Button
 
 openAddIncome.addEventListener("click", () => {
   addIncomeModal.showModal()
 })
+
+cancelAddIncome.addEventListener("click", () => {
+  addIncomeModal.close();
+});
+
+addIncomeSubmit.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  // get the value of input
+  let addIncome = parseFloat(document.getElementById("addIncome").value);
+
+  // check if valid
+  let isValid = true;
+  if (isNaN(addIncome) || addIncome === 0) {
+    isValid = false;
+    document.getElementById("addIncomeError").textContent = "Income is required and should be a number greater than 0";
+  } else {
+    document.getElementById("addIncomeError").textContent = "";
+  }
+
+  if (isValid) {
+    // add income to an array
+    const arrIncome = [addIncome];
+    // check if you already have an array in LS
+    let existingIncomeArr = JSON.parse(localStorage.getItem("arrIncome"));
+    // if not create an existin array for the future
+    if (!existingIncomeArr) {
+      existingIncomeArr = [];
+    }
+
+    // add new array to existing array
+    existingIncomeArr.unshift(arrIncome);
+
+    // save to local storage
+    localStorage.setItem("arrIncome", JSON.stringify(existingIncomeArr));
+
+    // close modal and reset form
+    addIncomeModal.close();
+    document.querySelector("form").reset();
+
+    // add input to incomeExpenseTab
+  }
+});
+
+// the add Expense button 
+
+openAddExpense.addEventListener("click", () => {
+  addExpenseModal.showModal()
+})
+
+cancelAddExpense.addEventListener("click", () => {
+  addExpenseModal.close();
+});
+
+addExpenseSubmit.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  let addExpense = parseFloat(document.getElementById("addExpense").value);
+
+  let isValid = true;
+  if (isNaN(addExpense) || addExpense === 0) {
+    isValid = false;
+    document.getElementById("addExpenseError").textContent = "Expense is required and should be a number greater than 0";
+  } else {
+    document.getElementById("addExpenseError").textContent = "";
+  }
+
+  if (isValid) {
+    const arrExpense = [addExpense];
+    let existingExpenseArr = JSON.parse(localStorage.getItem("arrExpense"));
+    if (!existingExpenseArr) {
+      existingExpenseArr = [];
+    }
+
+    existingExpenseArr.unshift(arrExpense);
+
+    localStorage.setItem("arrExpense", JSON.stringify(existingExpenseArr));
+
+    addExpenseModal.close();
+    document.querySelector("form").reset();
+  }
+});
+

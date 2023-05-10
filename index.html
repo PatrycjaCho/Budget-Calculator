@@ -27,7 +27,7 @@
                     <label for="income">Monthly Income:</label>
                     <input type="number" name="income" id="income" placeholder="0.00" required><br>
                     <span id="incomeError" class="error"></span>
-   
+
                     <label for="save">How much would you like to save a month?</label>
                     <input type="number" id="save" name="save" placeholder="0.00" required><br>
                     <span id="saveError" class="error"></span>
@@ -56,19 +56,31 @@
         </div>
 
 
-        
+
         <div class="bottom">
             <i id="openAddIncome" class="fa-regular fa-square-plus fa-xl"></i>
             <dialog class="addIncomeModal">
                 <form>
                     <label for="addIncome">Add Income:</label>
                     <input type="number" name="addIncome" id="addIncome" placeholder="0.00">
+                    <span id="addIncomeError" class="error"></span>
                     <button id="addIncomeSubmit" type="submit">Submit</button>
                     <button type="submit" formmethod="dialog" id="cancelAddIncome" formnovalidate>Cancel</button>
                 </form>
             </dialog>
-            <i class="fa-regular fa-square-minus fa-xl"></i>
-            <dialog class="addExpenseModal"></dialog>
+            <i id="openAddExpense" class="fa-regular fa-square-minus fa-xl"></i>
+            <dialog class="addExpenseModal">
+                <form>
+                    <label for="addExpense">Add Expense:</label>
+                    <input type="number" name="addExpensencome" id="addExpense" placeholder="0.00">
+                    <span id="addExpenseError" class="error"></span>
+                    <button id="addExpenseSubmit" type="submit">Submit</button>
+                    <button type="submit" formmethod="dialog" id="cancelAddExpense" formnovalidate>Cancel</button>
+                </form>
+            </dialog>
+            <div class="incomeExpenseTab" id="incomeExpenseTab"></div>
+            <div class="expenseTab" id="expenseTab"></div>
+            <div class="incomeTab" id="incomeTab"></div>
         </div>
     </div>
 
