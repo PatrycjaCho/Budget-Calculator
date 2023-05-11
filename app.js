@@ -21,8 +21,6 @@ const addExpenseSubmit = document.getElementById("addExpenseSubmit");
 const cancelAddExpense = document.getElementById("cancelAddExpense");
 
 const incomeExpenseTab = document.getElementById("incomeExpenseTab")
-const expenseTab = document.getElementById("expenseTab")
-const incomeTab = document.getElementById("incomeTab")
 
 // make it check if there is already data in storage 
 let budgetData = JSON.parse(localStorage.getItem("budgetData"));
@@ -34,7 +32,7 @@ if (budgetData) {
 else {
   moneyTotal.textContent = "£0.00";
 }
-document.querySelector("form").reset();
+document.getElementById("initialForm").reset();
 
 // the updateUI function 
 function updateUI(budgetData) {
@@ -55,8 +53,8 @@ openModal.addEventListener("click", () => {
 
 cancelBtn.addEventListener("click", () => {
   formModal.close();
-  document.querySelector("form").reset();
-
+  addExpenseModal.close();
+  document.getElementById("initialForm").reset();
   //clear error messages if form has been canceled
   document.querySelectorAll('.error').forEach((element) => {
     element.textContent = "";
@@ -144,7 +142,10 @@ submitBtn.addEventListener("click", function (event) {
     formModal.close();
 
     // clear form 
-    document.querySelector("form").reset();
+    addExpenseModal.close();
+    document.getElementById("initialForm").reset();
+    location.reload()
+
   }
 });
 
@@ -156,6 +157,7 @@ openAddIncome.addEventListener("click", () => {
 
 cancelAddIncome.addEventListener("click", () => {
   addIncomeModal.close();
+  document.getElementById("incomeForm").reset();
 });
 
 addIncomeSubmit.addEventListener("click", function (event) {
@@ -163,6 +165,7 @@ addIncomeSubmit.addEventListener("click", function (event) {
 
   // get the value of input
   let addIncome = parseFloat(document.getElementById("addIncome").value);
+  let addDateIncome = document.getElementById("dateIncome").value;
 
   // check if valid
   let isValid = true;
@@ -172,6 +175,14 @@ addIncomeSubmit.addEventListener("click", function (event) {
   } else {
     document.getElementById("addIncomeError").textContent = "";
   }
+
+  if (addDateIncome === '') {
+    isValid = false;
+    document.getElementById("addIncomeDateError").textContent = "Please select a date";
+  } else {
+    document.getElementById("addIncomeDateError").textContent = "";
+  }
+
 
   if (isValid) {
     // add income to an array
@@ -189,11 +200,30 @@ addIncomeSubmit.addEventListener("click", function (event) {
     // save to local storage
     localStorage.setItem("arrIncome", JSON.stringify(existingIncomeArr));
 
+    let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
+    cashflowsOnDate = cashflows[addDateIncome] || []
+
+    cashflowsOnDate.push({
+      cashflow: addIncome,
+    })
+    cashflows[addDateIncome] = cashflowsOnDate
+    localStorage.setItem("cashflows", JSON.stringify(cashflows));
+
+    // Update total
+    const currTotal = budgetData['balance'];
+    let new_total = currTotal + addIncome
+    budgetData['balance'] = new_total    
+
+    const currMoneyLeft = budgetData['moneyLeft']
+    let new_moneyLeft = currMoneyLeft + addIncome
+    budgetData['moneyLeft'] = new_moneyLeft
+
+    localStorage.setItem("budgetData", JSON.stringify(budgetData));
+
     // close modal and reset form
     addIncomeModal.close();
-    document.querySelector("form").reset();
-
-    // add input to incomeExpenseTab
+    document.getElementById("incomeForm").reset();
+    location.reload()
   }
 });
 
@@ -205,19 +235,28 @@ openAddExpense.addEventListener("click", () => {
 
 cancelAddExpense.addEventListener("click", () => {
   addExpenseModal.close();
+  document.getElementById("expenseForm").reset();
+
 });
 
 addExpenseSubmit.addEventListener("click", function (event) {
   event.preventDefault();
 
   let addExpense = parseFloat(document.getElementById("addExpense").value);
-
+  let addDateExpense = document.getElementById("dateExpense").value
   let isValid = true;
   if (isNaN(addExpense) || addExpense === 0) {
     isValid = false;
     document.getElementById("addExpenseError").textContent = "Expense is required and should be a number greater than 0";
   } else {
     document.getElementById("addExpenseError").textContent = "";
+  }
+
+  if (addDateExpense === '') {
+    isValid = false;
+    document.getElementById("addExpenseDateError").textContent = "Please select a date";
+  } else {
+    document.getElementById("addExpenseDateError").textContent = "";
   }
 
   if (isValid) {
@@ -231,8 +270,95 @@ addExpenseSubmit.addEventListener("click", function (event) {
 
     localStorage.setItem("arrExpense", JSON.stringify(existingExpenseArr));
 
+    let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
+    cashflowsOnDate = cashflows[addDateExpense] || []
+
+    cashflowsOnDate.push({
+      cashflow: -addExpense,
+    })
+    cashflows[addDateExpense] = cashflowsOnDate
+    localStorage.setItem("cashflows", JSON.stringify(cashflows));
+
+    const currTotal = budgetData['balance'];
+    let new_total = currTotal - addExpense
+    budgetData['balance'] = new_total
+
+    const currMoneyLeft = budgetData['moneyLeft']
+    let new_moneyLeft = currMoneyLeft - addExpense
+    budgetData['moneyLeft'] = new_moneyLeft
+
+
+    localStorage.setItem("budgetData", JSON.stringify(budgetData));
+
+    //close modal, reset form
     addExpenseModal.close();
-    document.querySelector("form").reset();
+    document.getElementById("expenseForm").reset();
+    location.reload()
   }
-});
+}
+);
+
+
+
+const tab = document.getElementById('incomeExpenseTab')
+
+// Should be of the format: {"2023-01-01": [{"cashflow": -1}]}
+const cashflows = JSON.parse(localStorage.getItem("cashflows"))
+
+// Get all dates from cashflows, sort ascending then reverse for descending
+const sortedDates = Object.keys(cashflows).sort().reverse()
+
+// Iterate through each of our sorted dates
+for (let j = 0; j < sortedDates.length; j++) {
+  const date = sortedDates[j]  // Actually get the date
+  const cashflowArr = cashflows[date]  // Extract our list of cashflows: [{"cashflow": -1}]
+
+  // Create a div to contain all the elements for this date
+  const dayBox = document.createElement('div')
+  dayBox.className = "dayBox"
+
+  // Create a p to put date in and add to dayBox
+  const boxDate = document.createElement('p')
+  boxDate.className = 'boxDate'
+  boxDate.textContent = date
+  dayBox.append(boxDate)
+
+  // For each cashflow add a cashflow div
+  for (let i = 0; i < cashflowArr.length; i++) {
+
+    // Pull "cashflow" from our element in list
+    const {cashflow} = cashflowArr[i]
+
+    // Create div and ps
+    const incomeExpense = document.createElement('div')
+    const incomeExpenceP = document.createElement('p')
+    const incomeExpenceValueP = document.createElement('p')
+    
+    // Add our ps to the div
+    incomeExpense.append(incomeExpenceP)
+    incomeExpense.append(incomeExpenceValueP)
+    
+    // Add our div to our dayBox
+    dayBox.append(incomeExpense)
+  
+    if (cashflow < 0) {
+      // This is an expense so set contents & classes correctly
+      incomeExpenceP.textContent = "Expense:"
+      incomeExpense.className = "expenseBox"
+      incomeExpenceValueP.className = "redText"
+    }
+    else {
+      // This is an income so set contents & classes correctly
+      incomeExpenceP.textContent = "Income:"
+      incomeExpense.className = "incomeBox"
+      incomeExpenceValueP.className = "greenText"
+    }
+
+    // Always set the cashflow text
+    incomeExpenceValueP.textContent = `£ ${cashflow}`
+  }
+
+  // Now that we have built our entire box for the day - add to tab
+  tab.append(dayBox)
+}
 

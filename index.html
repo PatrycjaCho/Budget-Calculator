@@ -15,11 +15,11 @@
 
     <h1>Budget Calculator</h1>
 
-    <div id="wrapper">
+    <div class="wrapper">
         <div class="top">
             <i id="openModal" class="fa-solid fa-circle-plus fa-xl" style="color: #000000;"></i>
             <dialog class="formModal">
-                <form>
+                <form id="initialForm">
                     <label for="balance">Starting Balance:</label>
                     <input type="number" id="balance" name="balance" placeholder="0.00" required><br>
                     <span id="balanceError" class="error"></span>
@@ -49,38 +49,66 @@
                     <button type="submit" formmethod="dialog" id="cancelBtn" formnovalidate>Cancel</button>
                 </form>
             </dialog>
+
             <h2 id="moneyTotal"></h2>
-            <h3>Left to spend: </h3>
-            <p id="calculatedMoneyLeft"></p>
-            </p>
+            <div class="dataInfo"></div>
+            <div class="leftToSpend">
+                <p id="leftToSpendP">Left to spend: </p>
+                <p id="calculatedMoneyLeft"></p>
+            </div>
         </div>
 
 
 
         <div class="bottom">
-            <i id="openAddIncome" class="fa-regular fa-square-plus fa-xl"></i>
+            <div class="buttons">
+                <i id="openAddIncome" class="fa-regular fa-square-plus fa-xl"></i>
+                <i id="openAddExpense" class="fa-regular fa-square-minus fa-xl"></i>
+            </div>
             <dialog class="addIncomeModal">
-                <form>
+                <form id="incomeForm">
                     <label for="addIncome">Add Income:</label>
                     <input type="number" name="addIncome" id="addIncome" placeholder="0.00">
                     <span id="addIncomeError" class="error"></span>
+
+                    <label for="dateIncome">Select a date:</label>
+                    <input type="date" id="dateIncome" name="dateIncome">
+                    <span id="addIncomeDateError" class="error"></span>
+
                     <button id="addIncomeSubmit" type="submit">Submit</button>
                     <button type="submit" formmethod="dialog" id="cancelAddIncome" formnovalidate>Cancel</button>
                 </form>
             </dialog>
-            <i id="openAddExpense" class="fa-regular fa-square-minus fa-xl"></i>
+
             <dialog class="addExpenseModal">
-                <form>
+                <form id="expenseForm">
                     <label for="addExpense">Add Expense:</label>
                     <input type="number" name="addExpensencome" id="addExpense" placeholder="0.00">
                     <span id="addExpenseError" class="error"></span>
+
+                    <label for="dateExpense">Select a date:</label>
+                    <input type="date" id="dateExpense" name="dateExpense">
+                    <span id="addExpenseDateError" class="error"></span>
+
+
                     <button id="addExpenseSubmit" type="submit">Submit</button>
                     <button type="submit" formmethod="dialog" id="cancelAddExpense" formnovalidate>Cancel</button>
                 </form>
             </dialog>
-            <div class="incomeExpenseTab" id="incomeExpenseTab"></div>
-            <div class="expenseTab" id="expenseTab"></div>
-            <div class="incomeTab" id="incomeTab"></div>
+
+            <div class="incomeExpenseTab" id="incomeExpenseTab">
+                <!-- <div class="dayBox">
+                    <p class="boxDate"></p>
+                    <div class="incomeBox">
+                        <p></p>
+                        <p class="greenText"></p>
+                    </div>
+                    <div class="expenseBox">
+                        <p></p>
+                        <p class="redText"></p> -->
+                    <!-- </div>
+                </div> -->
+            </div>
         </div>
     </div>
 
