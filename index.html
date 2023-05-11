@@ -17,14 +17,14 @@
 
     <div class="wrapper">
         <div class="top">
-            <i id="openModal" class="fa-solid fa-circle-plus fa-xl" style="color: #000000;"></i>
+            <i id="openModal" class="fa-solid fa-circle-plus fa-2xl" style="color: #000000;"></i>
             <dialog class="formModal">
                 <form id="initialForm">
                     <label for="balance">Starting Balance:</label>
                     <input type="number" id="balance" name="balance" placeholder="0.00" required><br>
                     <span id="balanceError" class="error"></span>
 
-                    <label for="income">Monthly Income:</label>
+                    <label for="income">Salary:</label>
                     <input type="number" name="income" id="income" placeholder="0.00" required><br>
                     <span id="incomeError" class="error"></span>
 
@@ -46,12 +46,16 @@
                     <span id="otherError" class="error"></span>
 
                     <button id="submitBtn" type="submit">Submit</button>
-                    <button type="submit" formmethod="dialog" id="cancelBtn" formnovalidate>Cancel</button>
+                    <button type="submit" formmethod="dialog" id="cancelBtn" formnovalidate>Clear</button>
                 </form>
             </dialog>
 
             <h2 id="moneyTotal"></h2>
-            <div class="dataInfo"></div>
+            <div class="dataInfo">
+                <div id="salaryInfo"><p>Salary</p></div>
+                <div id="expensesInfo"><p>Monthly Expenses</p></div>
+                <div id="goalInfo"><p>Savings Goal</p></div>
+            </div>
             <div class="leftToSpend">
                 <p id="leftToSpendP">Left to spend: </p>
                 <p id="calculatedMoneyLeft"></p>
@@ -62,8 +66,8 @@
 
         <div class="bottom">
             <div class="buttons">
-                <i id="openAddIncome" class="fa-regular fa-square-plus fa-xl"></i>
-                <i id="openAddExpense" class="fa-regular fa-square-minus fa-xl"></i>
+                <i id="openAddIncome" class="fa-regular fa-square-plus fa-2xl"></i>
+                <i id="openAddExpense" class="fa-regular fa-square-minus fa-2xl"></i>
             </div>
             <dialog class="addIncomeModal">
                 <form id="incomeForm">

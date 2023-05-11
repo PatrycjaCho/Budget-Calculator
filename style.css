@@ -1,3 +1,9 @@
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -13,18 +19,20 @@
 
   display: flex;
   flex-direction: column;
+
+  height: 400px;
 }
 
 #openModal {
   align-self: flex-end;
   padding-top: 50px;
   padding-right: 50px;
-  font-size: xx-large;
 }
 
 #moneyTotal {
   align-self: center;
-  font-size: 5em;
+  font-size: 4em;
+  margin: 20px;
 }
 
 .leftToSpend {
@@ -38,13 +46,18 @@
 }
 
 #calculatedMoneyLeft {
-  font-size: 3em;
+  font-size: 2.5em;
   align-self: center;
 }
 
 .bottom {
   display: flex;
   flex-direction: column;
+
+  height: 700px;
+  overflow-x: hidden; 
+  overflow-y: scroll; 
+
 }
 
 .buttons {
@@ -52,9 +65,9 @@
   flex-direction: row;
   justify-content: flex-end;
   gap: 10px;
-
-  padding-top: 30px;
-  padding-right: 30px;
+  
+  padding-top: 50px;
+  padding-right: 50px;
 }
 
 .incomeExpenseTab {
@@ -70,6 +83,7 @@
 
   margin: auto;
   width: 70%;
+  padding-bottom: 20px;
 }
 
 .dayBox .boxDate {
@@ -96,6 +110,36 @@
   border: 2px solid black;
 
 }
+
+.dataInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#salaryInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#expensesInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#goalInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infoText {
+  font-size: 1.5rem;
+  margin: 4px;
+}
+
 
 .redText {
   color: red;

@@ -32,7 +32,7 @@ if (budgetData) {
 else {
   moneyTotal.textContent = "£0.00";
 }
-document.getElementById("initialForm").reset();
+// document.getElementById("initialForm").reset();
 
 // the updateUI function 
 function updateUI(budgetData) {
@@ -121,7 +121,7 @@ submitBtn.addEventListener("click", function (event) {
 
     // calculate moneyLeft
     let moneyLeft = income - save - (rent + memberships + other);
-
+    let expense = rent + memberships + other;
     // put the values in LS
     const budgetData = {
       balance: balance,
@@ -130,7 +130,8 @@ submitBtn.addEventListener("click", function (event) {
       rent: rent,
       memberships: memberships,
       other: other,
-      moneyLeft: moneyLeft
+      moneyLeft: moneyLeft,
+      expense: expense
     };
     localStorage.setItem("budgetData", JSON.stringify(budgetData));
 
@@ -143,11 +144,12 @@ submitBtn.addEventListener("click", function (event) {
 
     // clear form 
     addExpenseModal.close();
-    document.getElementById("initialForm").reset();
+    // document.getElementById("initialForm").reset();
     location.reload()
 
   }
 });
+
 
 // the add Income Button
 
@@ -212,7 +214,7 @@ addIncomeSubmit.addEventListener("click", function (event) {
     // Update total
     const currTotal = budgetData['balance'];
     let new_total = currTotal + addIncome
-    budgetData['balance'] = new_total    
+    budgetData['balance'] = new_total
 
     const currMoneyLeft = budgetData['moneyLeft']
     let new_moneyLeft = currMoneyLeft + addIncome
@@ -327,20 +329,20 @@ for (let j = 0; j < sortedDates.length; j++) {
   for (let i = 0; i < cashflowArr.length; i++) {
 
     // Pull "cashflow" from our element in list
-    const {cashflow} = cashflowArr[i]
+    const { cashflow } = cashflowArr[i]
 
     // Create div and ps
     const incomeExpense = document.createElement('div')
     const incomeExpenceP = document.createElement('p')
     const incomeExpenceValueP = document.createElement('p')
-    
+
     // Add our ps to the div
     incomeExpense.append(incomeExpenceP)
     incomeExpense.append(incomeExpenceValueP)
-    
+
     // Add our div to our dayBox
     dayBox.append(incomeExpense)
-  
+
     if (cashflow < 0) {
       // This is an expense so set contents & classes correctly
       incomeExpenceP.textContent = "Expense:"
@@ -362,3 +364,24 @@ for (let j = 0; j < sortedDates.length; j++) {
   tab.append(dayBox)
 }
 
+// ad dataInfo 
+const income = budgetData['income']
+const salaryInfo = document.getElementById("salaryInfo")
+const salaryInfoP = document.createElement("p")
+salaryInfoP.textContent = `£${income}`
+salaryInfo.append(salaryInfoP)
+salaryInfoP.className = "infoText"
+
+const expense = budgetData["expense"]
+const expenseInfo = document.getElementById("expensesInfo")
+const expenseInfoP = document.createElement("p")
+expenseInfoP.textContent = `£${expense}`
+expenseInfo.append(expenseInfoP)
+expenseInfoP.className = "infoText"
+
+const save = budgetData["save"]
+const goalInfo = document.getElementById("goalInfo")
+const goalInfoP = document.createElement("p")
+goalInfoP.textContent = `£${save}`
+goalInfo.append(goalInfoP) 
+goalInfoP.className = "infoText"
