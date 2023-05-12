@@ -32,7 +32,7 @@ if (budgetData) {
 else {
   moneyTotal.textContent = "£0.00";
 }
-// document.getElementById("initialForm").reset();
+// document.getElementById("initialForm").reset(); - removed
 
 // the updateUI function 
 function updateUI(budgetData) {
@@ -44,6 +44,27 @@ function updateUI(budgetData) {
   document.getElementById("rent").value = budgetData.rent;
   document.getElementById("memberships").value = budgetData.memberships;
   document.getElementById("other").value = budgetData.other;
+
+  const income = budgetData['income']
+  const salaryInfo = document.getElementById("salaryInfo")
+  const salaryInfoP = document.createElement("p")
+  salaryInfoP.textContent = `£${income}`
+  salaryInfo.append(salaryInfoP)
+  salaryInfoP.className = "infoText"
+
+  const expense = budgetData["expense"]
+  const expenseInfo = document.getElementById("expensesInfo")
+  const expenseInfoP = document.createElement("p")
+  expenseInfoP.textContent = `£${expense}`
+  expenseInfo.append(expenseInfoP)
+  expenseInfoP.className = "infoText"
+
+  const save = budgetData["save"]
+  const goalInfo = document.getElementById("goalInfo")
+  const goalInfoP = document.createElement("p")
+  goalInfoP.textContent = `£${save}`
+  goalInfo.append(goalInfoP)
+  goalInfoP.className = "infoText"
 }
 
 // open form on clicking
@@ -121,6 +142,7 @@ submitBtn.addEventListener("click", function (event) {
 
     // calculate moneyLeft
     let moneyLeft = income - save - (rent + memberships + other);
+    // calculate expense later used in for "monthly expenses" in UI
     let expense = rent + memberships + other;
     // put the values in LS
     const budgetData = {
@@ -144,7 +166,7 @@ submitBtn.addEventListener("click", function (event) {
 
     // clear form 
     addExpenseModal.close();
-    // document.getElementById("initialForm").reset();
+    // document.getElementById("initialForm").reset(); - removed 
     location.reload()
 
   }
@@ -160,6 +182,9 @@ openAddIncome.addEventListener("click", () => {
 cancelAddIncome.addEventListener("click", () => {
   addIncomeModal.close();
   document.getElementById("incomeForm").reset();
+  
+  document.querySelectorAll('.error').forEach((element) => {
+    element.textContent = "";})
 });
 
 addIncomeSubmit.addEventListener("click", function (event) {
@@ -187,20 +212,21 @@ addIncomeSubmit.addEventListener("click", function (event) {
 
 
   if (isValid) {
-    // add income to an array
-    const arrIncome = [addIncome];
+    //arrIncome and arrExpense remved in favor of cashflows
+    // 
+    // const arrIncome = [addIncome];
     // check if you already have an array in LS
-    let existingIncomeArr = JSON.parse(localStorage.getItem("arrIncome"));
+    // let existingIncomeArr = JSON.parse(localStorage.getItem("arrIncome"));
     // if not create an existin array for the future
-    if (!existingIncomeArr) {
-      existingIncomeArr = [];
-    }
+    // if (!existingIncomeArr) {
+    //   existingIncomeArr = [];
+    // }
 
     // add new array to existing array
-    existingIncomeArr.unshift(arrIncome);
+    // existingIncomeArr.unshift(arrIncome); - removed 
 
     // save to local storage
-    localStorage.setItem("arrIncome", JSON.stringify(existingIncomeArr));
+    // localStorage.setItem("arrIncome", JSON.stringify(existingIncomeArr)); - removed
 
     let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
     cashflowsOnDate = cashflows[addDateIncome] || []
@@ -238,6 +264,8 @@ openAddExpense.addEventListener("click", () => {
 cancelAddExpense.addEventListener("click", () => {
   addExpenseModal.close();
   document.getElementById("expenseForm").reset();
+  document.querySelectorAll('.error').forEach((element) => {
+    element.textContent = "";})
 
 });
 
@@ -262,15 +290,16 @@ addExpenseSubmit.addEventListener("click", function (event) {
   }
 
   if (isValid) {
-    const arrExpense = [addExpense];
-    let existingExpenseArr = JSON.parse(localStorage.getItem("arrExpense"));
-    if (!existingExpenseArr) {
-      existingExpenseArr = [];
-    }
+    // all removed - cashflows applied instead
+    // const arrExpense = [addExpense];
+    // let existingExpenseArr = JSON.parse(localStorage.getItem("arrExpense"));
+    // if (!existingExpenseArr) {
+    //   existingExpenseArr = [];
+    // }
 
-    existingExpenseArr.unshift(arrExpense);
+    // existingExpenseArr.unshift(arrExpense);
 
-    localStorage.setItem("arrExpense", JSON.stringify(existingExpenseArr));
+    // localStorage.setItem("arrExpense", JSON.stringify(existingExpenseArr));
 
     let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
     cashflowsOnDate = cashflows[addDateExpense] || []
@@ -345,13 +374,13 @@ for (let j = 0; j < sortedDates.length; j++) {
 
     if (cashflow < 0) {
       // This is an expense so set contents & classes correctly
-      incomeExpenceP.textContent = "Expense:"
+      incomeExpenceP.textContent = "EXPENSE:"
       incomeExpense.className = "expenseBox"
       incomeExpenceValueP.className = "redText"
     }
     else {
       // This is an income so set contents & classes correctly
-      incomeExpenceP.textContent = "Income:"
+      incomeExpenceP.textContent = "INCOME:"
       incomeExpense.className = "incomeBox"
       incomeExpenceValueP.className = "greenText"
     }
@@ -364,24 +393,25 @@ for (let j = 0; j < sortedDates.length; j++) {
   tab.append(dayBox)
 }
 
-// ad dataInfo 
-const income = budgetData['income']
-const salaryInfo = document.getElementById("salaryInfo")
-const salaryInfoP = document.createElement("p")
-salaryInfoP.textContent = `£${income}`
-salaryInfo.append(salaryInfoP)
-salaryInfoP.className = "infoText"
+// ad dataInfo - move it somewhere else !!!
+// const income = budgetData['income']
+// const salaryInfo = document.getElementById("salaryInfo")
+// const salaryInfoP = document.createElement("p")
+// salaryInfoP.textContent = `£${income}`
+// salaryInfo.append(salaryInfoP)
+// salaryInfoP.className = "infoText"
 
-const expense = budgetData["expense"]
-const expenseInfo = document.getElementById("expensesInfo")
-const expenseInfoP = document.createElement("p")
-expenseInfoP.textContent = `£${expense}`
-expenseInfo.append(expenseInfoP)
-expenseInfoP.className = "infoText"
+// const expense = budgetData["expense"]
+// const expenseInfo = document.getElementById("expensesInfo")
+// const expenseInfoP = document.createElement("p")
+// expenseInfoP.textContent = `£${expense}`
+// expenseInfo.append(expenseInfoP)
+// expenseInfoP.className = "infoText"
 
-const save = budgetData["save"]
-const goalInfo = document.getElementById("goalInfo")
-const goalInfoP = document.createElement("p")
-goalInfoP.textContent = `£${save}`
-goalInfo.append(goalInfoP) 
-goalInfoP.className = "infoText"
+// const save = budgetData["save"]
+// const goalInfo = document.getElementById("goalInfo")
+// const goalInfoP = document.createElement("p")
+// goalInfoP.textContent = `£${save}`
+// goalInfo.append(goalInfoP)
+// goalInfoP.className = "infoText"
+
