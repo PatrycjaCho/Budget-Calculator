@@ -12,14 +12,16 @@
 </head>
 
 <body>
-
+    <div class="topWrapper">
     <h1>BUDGET CALCULATOR</h1>
+   <div class="preSavedData"> <button id="preSavedData">USE PRE-SET DATA</button></div></div>
 
     <div class="wrapper">
         <div class="top">
             <i id="openModal" class="fa-sharp fa-solid fa-gear fa-2xl" style="color: #09337b;"></i>
             <dialog class="formModal">
                 <form id="initialForm">
+                    <i id="closeButton" class="fa-solid fa-circle-xmark fa-xl"></i>
                     <label for="balance">Starting Balance</label><br>
                     <input type="number" id="balance" name="balance" placeholder="0.00" required><br>
                     <span id="balanceError" class="error"></span>

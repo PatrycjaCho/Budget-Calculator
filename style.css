@@ -7,10 +7,40 @@ body {
   color: #03045e;
 }
 
-h1 {
-  display: flex;
-  justify-content: center;
+.topWrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  justify-items: center;
+}
+
+.topWrapper h1 {
+  grid-column: 5 / span 4;
   color: white;
+  margin: 0;
+}
+
+.topWrapper .preSavedData {
+  grid-column: 9 / 12;
+  justify-self: end;
+  margin-top: 15px;
+}
+
+.preSavedData #preSavedData {
+  background-color: #2C7DA0;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  margin-right: 100px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 
@@ -227,6 +257,10 @@ h1 {
 
 }
 
+#closeButton {
+  align-self: flex-end;
+}
+
 #initialForm input {
   font-size: 1.5rem;
   padding: 5px;
@@ -235,7 +269,9 @@ h1 {
   color: #03045E;
 }
 
-#submitBtn, #addExpenseSubmit, #addIncomeSubmit {
+#submitBtn,
+#addExpenseSubmit,
+#addIncomeSubmit {
   background-color: #2C7DA0;
   border: none;
   border-radius: 5px;
@@ -249,7 +285,9 @@ h1 {
   text-transform: uppercase;
 }
 
-#cancelBtn, #cancelAddExpense, #cancelAddIncome {
+#cancelBtn,
+#cancelAddExpense,
+#cancelAddIncome {
   background-color: #2C7DA0;
   border: none;
   border-radius: 5px;
@@ -269,7 +307,8 @@ h1 {
   justify-content: space-evenly;
 }
 
-#incomeForm, #expenseForm {
+#incomeForm,
+#expenseForm {
   padding: 10px;
   height: 400px;
   width: 400px;
@@ -280,7 +319,8 @@ h1 {
   font-size: 1.5rem;
 }
 
-#incomeForm input, #expenseForm input {
+#incomeForm input,
+#expenseForm input {
   font-size: 1.5rem;
   padding: 5px;
   border: 1px solid #90E0EF;
@@ -288,7 +328,7 @@ h1 {
   color: #03045E;
 }
 
-input[type="date"]{
+input[type="date"] {
   background-color: #90E0EF;
 }
 
