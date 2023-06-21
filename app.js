@@ -1,4 +1,4 @@
-// top variables
+// variables
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const openModal = document.getElementById("openModal");
@@ -9,7 +9,6 @@ let balance;
 
 let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft");
 
-// bottom variables
 const openAddIncome = document.getElementById("openAddIncome");
 const addIncomeModal = document.querySelector(".addIncomeModal");
 const addIncomeSubmit = document.getElementById("addIncomeSubmit");
@@ -32,9 +31,8 @@ if (budgetData) {
 else {
   moneyTotal.textContent = "£0.00";
 }
-// document.getElementById("initialForm").reset(); - removed
 
-// the updateUI function 
+// function to display data if in storage 
 function updateUI(budgetData) {
   moneyTotal.textContent = `£${budgetData.balance}`;
   calculatedMoneyLeft.textContent = `£${budgetData.moneyLeft}`
@@ -66,7 +64,6 @@ function updateUI(budgetData) {
   goalInfo.append(goalInfoP)
   goalInfoP.className = "infoText"
 
-
   const tab = document.getElementById('incomeExpenseTab')
 
   // Should be of the format: {"2023-01-01": [{"cashflow": -1}]}
@@ -89,7 +86,6 @@ function updateUI(budgetData) {
     boxDate.className = 'boxDate'
     boxDate.textContent = date
     dayBox.append(boxDate)
-
     // For each cashflow add a cashflow div
     for (let i = 0; i < cashflowArr.length; i++) {
 
@@ -121,7 +117,6 @@ function updateUI(budgetData) {
         incomeExpenceValueP.className = "greenText"
       }
 
-      // Always set the cashflow text
       incomeExpenceValueP.textContent = `£ ${cashflow}`
     }
 
@@ -241,7 +236,6 @@ submitBtn.addEventListener("click", function (event) {
   }
 });
 
-
 // the add Income Button
 
 openAddIncome.addEventListener("click", () => {
@@ -282,21 +276,6 @@ addIncomeSubmit.addEventListener("click", function (event) {
 
 
   if (isValid) {
-    //arrIncome and arrExpense remved in favor of cashflows
-    // 
-    // const arrIncome = [addIncome];
-    // check if you already have an array in LS
-    // let existingIncomeArr = JSON.parse(localStorage.getItem("arrIncome"));
-    // if not create an existin array for the future
-    // if (!existingIncomeArr) {
-    //   existingIncomeArr = [];
-    // }
-
-    // add new array to existing array
-    // existingIncomeArr.unshift(arrIncome); - removed 
-
-    // save to local storage
-    // localStorage.setItem("arrIncome", JSON.stringify(existingIncomeArr)); - removed
 
     addIncome = Math.abs(addIncome)
     let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
@@ -362,16 +341,7 @@ addExpenseSubmit.addEventListener("click", function (event) {
   }
 
   if (isValid) {
-    // all removed - cashflows applied instead
-    // const arrExpense = [addExpense];
-    // let existingExpenseArr = JSON.parse(localStorage.getItem("arrExpense"));
-    // if (!existingExpenseArr) {
-    //   existingExpenseArr = [];
-    // }
 
-    // existingExpenseArr.unshift(arrExpense);
-
-    // localStorage.setItem("arrExpense", JSON.stringify(existingExpenseArr));
     addExpense = Math.abs(addExpense)
     let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
     cashflowsOnDate = cashflows[addDateExpense] || []
@@ -390,7 +360,6 @@ addExpenseSubmit.addEventListener("click", function (event) {
     let new_moneyLeft = currMoneyLeft - addExpense
     budgetData['moneyLeft'] = new_moneyLeft
 
-
     localStorage.setItem("budgetData", JSON.stringify(budgetData));
 
     //close modal, reset form
@@ -400,92 +369,6 @@ addExpenseSubmit.addEventListener("click", function (event) {
   }
 }
 );
-
-
-
-// const tab = document.getElementById('incomeExpenseTab')
-
-// // Should be of the format: {"2023-01-01": [{"cashflow": -1}]}
-// const cashflows = JSON.parse(localStorage.getItem("cashflows"))
-
-// // Get all dates from cashflows, sort ascending then reverse for descending
-// const sortedDates = Object.keys(cashflows).sort().reverse()
-
-// // Iterate through each of our sorted dates
-// for (let j = 0; j < sortedDates.length; j++) {
-//   const date = sortedDates[j]  // Actually get the date
-//   const cashflowArr = cashflows[date]  // Extract our list of cashflows: [{"cashflow": -1}]
-
-//   // Create a div to contain all the elements for this date
-//   const dayBox = document.createElement('div')
-//   dayBox.className = "dayBox"
-
-//   // Create a p to put date in and add to dayBox
-//   const boxDate = document.createElement('p')
-//   boxDate.className = 'boxDate'
-//   boxDate.textContent = date
-//   dayBox.append(boxDate)
-
-//   // For each cashflow add a cashflow div
-//   for (let i = 0; i < cashflowArr.length; i++) {
-
-//     // Pull "cashflow" from our element in list
-//     const { cashflow } = cashflowArr[i]
-
-//     // Create div and ps
-//     const incomeExpense = document.createElement('div')
-//     const incomeExpenceP = document.createElement('p')
-//     const incomeExpenceValueP = document.createElement('p')
-
-//     // Add our ps to the div
-//     incomeExpense.append(incomeExpenceP)
-//     incomeExpense.append(incomeExpenceValueP)
-
-//     // Add our div to our dayBox
-//     dayBox.append(incomeExpense)
-
-//     if (cashflow < 0) {
-//       // This is an expense so set contents & classes correctly
-//       incomeExpenceP.textContent = "EXPENSE:"
-//       incomeExpense.className = "expenseBox"
-//       incomeExpenceValueP.className = "redText"
-//     }
-//     else {
-//       // This is an income so set contents & classes correctly
-//       incomeExpenceP.textContent = "INCOME:"
-//       incomeExpense.className = "incomeBox"
-//       incomeExpenceValueP.className = "greenText"
-//     }
-
-//     // Always set the cashflow text
-//     incomeExpenceValueP.textContent = `£ ${cashflow}`
-//   }
-
-//   // Now that we have built our entire box for the day - add to tab
-//   tab.append(dayBox)
-// }
-
-// ad dataInfo - move it somewhere else !!!
-// const income = budgetData['income']
-// const salaryInfo = document.getElementById("salaryInfo")
-// const salaryInfoP = document.createElement("p")
-// salaryInfoP.textContent = `£${income}`
-// salaryInfo.append(salaryInfoP)
-// salaryInfoP.className = "infoText"
-
-// const expense = budgetData["expense"]
-// const expenseInfo = document.getElementById("expensesInfo")
-// const expenseInfoP = document.createElement("p")
-// expenseInfoP.textContent = `£${expense}`
-// expenseInfo.append(expenseInfoP)
-// expenseInfoP.className = "infoText"
-
-// const save = budgetData["save"]
-// const goalInfo = document.getElementById("goalInfo")
-// const goalInfoP = document.createElement("p")
-// goalInfoP.textContent = `£${save}`
-// goalInfo.append(goalInfoP)
-// goalInfoP.className = "infoText"
 
 preSavedData = document.getElementById("preSavedData")
 preSavedData.addEventListener("click", () => {
@@ -504,8 +387,8 @@ preSavedData.addEventListener("click", () => {
   localStorage.setItem("budgetData", JSON.stringify(budgetData));
 
   const fakeCashFlows = {
-    "2023-05-12": [{cashflow: 50}, {cashflow: -125}, {cashflow: 75}],
-    "2023-05-11": [{cashflow: 75}, {cashflow: -12}]
+    "2023-05-12": [{ cashflow: 50 }, { cashflow: -125 }, { cashflow: 75 }],
+    "2023-05-11": [{ cashflow: 75 }, { cashflow: -12 }]
   }
 
   localStorage.setItem("cashflows", JSON.stringify(fakeCashFlows))
