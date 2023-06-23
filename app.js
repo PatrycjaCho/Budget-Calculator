@@ -1,41 +1,37 @@
-// variables
+// Variables
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const openModal = document.getElementById("openModal");
 const formModal = document.querySelector(".formModal");
-
 let moneyTotal = document.getElementById("moneyTotal");
 let balance;
-
 let calculatedMoneyLeft = document.getElementById("calculatedMoneyLeft");
-
 const openAddIncome = document.getElementById("openAddIncome");
 const addIncomeModal = document.querySelector(".addIncomeModal");
 const addIncomeSubmit = document.getElementById("addIncomeSubmit");
 const cancelAddIncome = document.getElementById("cancelAddIncome");
-
 const openAddExpense = document.getElementById("openAddExpense");
 const addExpenseModal = document.querySelector(".addExpenseModal");
 const addExpenseSubmit = document.getElementById("addExpenseSubmit");
 const cancelAddExpense = document.getElementById("cancelAddExpense");
-
 const incomeExpenseTab = document.getElementById("incomeExpenseTab")
 
-// make it check if there is already data in storage 
+// Check if there is already data in storage 
 let budgetData = JSON.parse(localStorage.getItem("budgetData"));
 
-//make it display data from storage with new function UpdateUI
+// If data in storage - update the page with it 
 if (budgetData) {
   updateUI(budgetData);
 }
+// If no data - display total of £0.
 else {
   moneyTotal.textContent = "£0.00";
 }
 
-// function to display data if in storage 
+// Function to display data if in storage 
 function updateUI(budgetData) {
-  moneyTotal.textContent = `£${budgetData.balance}`;
-  calculatedMoneyLeft.textContent = `£${budgetData.moneyLeft}`
+  // DATA TAB
+  // Get data from storage 
   document.getElementById("balance").value = budgetData.balance;
   document.getElementById("income").value = budgetData.income;
   document.getElementById("save").value = budgetData.save;
@@ -43,6 +39,11 @@ function updateUI(budgetData) {
   document.getElementById("memberships").value = budgetData.memberships;
   document.getElementById("other").value = budgetData.other;
 
+  // Calculate and print 'total bablance' and 'left to spend' with data 
+  moneyTotal.textContent = `£${budgetData.balance}`;
+  calculatedMoneyLeft.textContent = `£${budgetData.moneyLeft}`
+
+  // Create new paragraphs and fill them with data
   const income = budgetData['income']
   const salaryInfo = document.getElementById("salaryInfo")
   const salaryInfoP = document.createElement("p")
@@ -64,15 +65,17 @@ function updateUI(budgetData) {
   goalInfo.append(goalInfoP)
   goalInfoP.className = "infoText"
 
+  // CASHFLOWS TAB
   const tab = document.getElementById('incomeExpenseTab')
 
-  // Should be of the format: {"2023-01-01": [{"cashflow": -1}]}
+  // Get cashflows from local storage OR get an empty dictionary
   const cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
 
   // Get all dates from cashflows, sort ascending then reverse for descending
+  // Should be of the format: {"2023-01-01": [{"cashflow": -1}]}
   const sortedDates = Object.keys(cashflows).sort().reverse()
 
-  // Iterate through each of our sorted dates
+  // Iterate through each of sorted dates
   for (let j = 0; j < sortedDates.length; j++) {
     const date = sortedDates[j]  // Actually get the date
     const cashflowArr = cashflows[date]  // Extract our list of cashflows: [{"cashflow": -1}]
@@ -88,8 +91,7 @@ function updateUI(budgetData) {
     dayBox.append(boxDate)
     // For each cashflow add a cashflow div
     for (let i = 0; i < cashflowArr.length; i++) {
-
-      // Pull "cashflow" from our element in list
+      // Pull cashflow from an element in list
       const { cashflow } = cashflowArr[i]
 
       // Create div and ps
@@ -105,18 +107,17 @@ function updateUI(budgetData) {
       dayBox.append(incomeExpense)
 
       if (cashflow < 0) {
-        // This is an expense so set contents & classes correctly
+        // Expense
         incomeExpenceP.textContent = "EXPENSE:"
         incomeExpense.className = "expenseBox"
         incomeExpenceValueP.className = "redText"
       }
       else {
-        // This is an income so set contents & classes correctly
+        // Income
         incomeExpenceP.textContent = "INCOME:"
         incomeExpense.className = "incomeBox"
         incomeExpenceValueP.className = "greenText"
       }
-
       incomeExpenceValueP.textContent = `£ ${cashflow}`
     }
 
@@ -125,33 +126,33 @@ function updateUI(budgetData) {
   }
 }
 
-// open form on clicking
+// Open form on clicking
 openModal.addEventListener("click", () => {
   formModal.showModal();
 })
-
+// Close form on clicking 'close'
 closeButton = document.getElementById("closeButton")
 closeButton.addEventListener("click", () => {
   formModal.close()
 })
 
-
+// Cancel form
 cancelBtn.addEventListener("click", () => {
   formModal.close();
   addExpenseModal.close();
   document.getElementById("initialForm").reset();
-  //clear error messages if form has been canceled
+  // Clear error messages if form has been canceled
   document.querySelectorAll('.error').forEach((element) => {
     element.textContent = "";
   })
 })
 
 
-// submit button actions 
+// Submit button actions 
 submitBtn.addEventListener("click", function (event) {
   event.preventDefault();
 
-  // get the values of inputs
+  // Get the values of inputs
   balance = parseFloat(document.getElementById("balance").value);
   const income = parseFloat(document.getElementById("income").value);
   const save = parseFloat(document.getElementById("save").value);
@@ -201,12 +202,12 @@ submitBtn.addEventListener("click", function (event) {
     document.getElementById("otherError").textContent = "";
   }
 
-  // actions if form is valid
+  // Actions if form is valid
   if (validInput) {
 
-    // calculate moneyLeft
+    // Calculate moneyLeft
     let moneyLeft = income - save - (rent + memberships + other);
-    // calculate expense later used in for "monthly expenses" in UI
+    // Calculate monthly expenses
     let expense = rent + memberships + other;
     // put the values in LS
     const budgetData = {
@@ -230,14 +231,12 @@ submitBtn.addEventListener("click", function (event) {
 
     // clear form 
     addExpenseModal.close();
-    // document.getElementById("initialForm").reset(); - removed 
     location.reload()
 
   }
 });
 
 // the add Income Button
-
 openAddIncome.addEventListener("click", () => {
   addIncomeModal.showModal()
 })
@@ -254,11 +253,11 @@ cancelAddIncome.addEventListener("click", () => {
 addIncomeSubmit.addEventListener("click", function (event) {
   event.preventDefault();
 
-  // get the value of input
+  // Get the value of input
   let addIncome = parseFloat(document.getElementById("addIncome").value);
   let addDateIncome = document.getElementById("dateIncome").value;
 
-  // check if valid
+  // Check if valid
   let isValid = true;
   if (isNaN(addIncome) || addIncome === 0) {
     isValid = false;
@@ -276,7 +275,7 @@ addIncomeSubmit.addEventListener("click", function (event) {
 
 
   if (isValid) {
-
+    // using Math.abs to prevent using negative values on input
     addIncome = Math.abs(addIncome)
     let cashflows = JSON.parse(localStorage.getItem("cashflows")) || {}
     cashflowsOnDate = cashflows[addDateIncome] || []
@@ -305,8 +304,7 @@ addIncomeSubmit.addEventListener("click", function (event) {
   }
 });
 
-// the add Expense button 
-
+// The add Expense button 
 openAddExpense.addEventListener("click", () => {
   addExpenseModal.showModal()
 })
@@ -359,10 +357,9 @@ addExpenseSubmit.addEventListener("click", function (event) {
     const currMoneyLeft = budgetData['moneyLeft']
     let new_moneyLeft = currMoneyLeft - addExpense
     budgetData['moneyLeft'] = new_moneyLeft
-
+S
     localStorage.setItem("budgetData", JSON.stringify(budgetData));
 
-    //close modal, reset form
     addExpenseModal.close();
     document.getElementById("expenseForm").reset();
     location.reload()
@@ -370,6 +367,7 @@ addExpenseSubmit.addEventListener("click", function (event) {
 }
 );
 
+// Pre saved button - filling the storage with data
 preSavedData = document.getElementById("preSavedData")
 preSavedData.addEventListener("click", () => {
 

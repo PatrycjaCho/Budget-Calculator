@@ -7,19 +7,19 @@ body {
   color: #03045e;
 }
 
-.topWrapper {
+.navBar {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   justify-items: center;
 }
 
-.topWrapper h1 {
+.navBar h1 {
   grid-column: 5 / span 4;
   color: white;
   margin: 0;
 }
 
-.topWrapper .preSavedData {
+.navBar .preSavedData {
   grid-column: 9 / 12;
   justify-self: end;
   margin-top: 15px;
@@ -74,7 +74,7 @@ body {
 
 }
 
-.secondTop {
+.dataCard {
   margin-top: 25px;
   margin-right: 50px;
   margin-left: 50px;
